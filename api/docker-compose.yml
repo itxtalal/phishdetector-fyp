@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    image: phishdetector
+    ports:
+      - 8000:8000
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: phishdetector
+      DB_PASSWORD: phishdetector
+      DB_NAME: phishdetector
+    volumes:
+      - ./:/app
+  db:
+    ports: 
+      - 5432:5432
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: phishdetector
+      POSTGRES_USER: phishdetector
+      POSTGRES_DB: phishdetector
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+    driver: local
