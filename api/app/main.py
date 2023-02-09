@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from pydantic import BaseModel, AnyUrl
 from url_normalize import url_normalize
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.models import PhishingSite
 from app.db import get_db
@@ -9,6 +10,10 @@ from app.db import get_db
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*']
+)
 
 class AnalyzeRequestBody(BaseModel):
     url: AnyUrl
