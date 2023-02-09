@@ -1,7 +1,30 @@
 import React, { useState, useEffect } from 'react';
+import Alert from './Alert';
+
+// const API_URL = 'http://35.192.100.124/analyze';
+const API_URL = 'http://localhost:5000/analyze';
+
+// get all the links extracted from webpage
+const getLinks = () => {
+  const links = document.getElementsByTagName('a');
+  const linksArray = Array.from(links);
+  return linksArray;
+};
+
+// remove links with same origin
+const filterLinks = (links: HTMLAnchorElement[]) => {
+  const seenOrigins = new Set();
+
+  for (const link of links) {
+    const linkOrigin = link?.origin;
+    if (!seenOrigins.has(linkOrigin)) {
+      seenOrigins.add(linkOrigin);
+    }
+  }
+  return seenOrigins;
+};
 
 function App() {
-  // const [data, setData] = useState({ domain: '', isBadUrl: false });
   const [showAlert, setShowAlert] = useState(false);
 
   const dismiss = () => {
@@ -11,9 +34,16 @@ function App() {
   };
 
   useEffect(() => {
-    const url = window.location.host;
+    const url = window.location.href;
+    // phising    bool
+    // domain     bool - already detected domain match or not
+    // path       bool - already detected path match or not
+    // query      bool - matching or not
+    // fragment   bool - matching or not
 
-    fetch('http://localhost:5000/check', {
+    // user have a whitelist array to not check some urls
+
+    fetch(API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,53 +52,54 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('data', data);
-        if (data.isBadUrl) {
+        if (data.phishing === true) {
           setShowAlert(true);
         }
-        // setData(data);
       })
       .catch((err) => {
         console.log('err', err);
       });
   }, []);
 
+  useEffect(() => {
+    const links = getLinks();
+    console.log('links', links);
+
+    const filteredLinks = filterLinks(links);
+    console.log('filteredLinks', filteredLinks);
+
+    // for each link, send a request to backend to check if it is phishing or not
+    links.forEach((link) => {
+      const url = link.href;
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log('data', data);
+          if (data.phishing) {
+            link.style.color = 'red';
+          }
+          if (data.phishing === false) {
+            link.style.color = 'green';
+          }
+        })
+        .catch((err) => {
+          console.log('err', err);
+        });
+    });
+  }, []);
+
   if (showAlert) {
     // disable scrolling
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100%';
-    return (
-      <div className="container-pd">
-        <div className="container2-pd">
-          <div className="card-pd">
-            <div className="flex-center-pd">
-              <div className="inner-pd">
-                <svg
-                  class="svg-icon-pd"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M0 0h24v24H0V0z" fill="none" />
-                  <path d="M12 5.99L19.53 19H4.47L12 5.99M12 2L1 21h22L12 2zm1 14h-2v2h2v-2zm0-6h-2v4h2v-4z" />
-                </svg>
-              </div>
-              <h2 class="heading-pd">Phishing Site Detected!</h2>
-              <p class="description-pd">
-                This site is known to be a phishing site. Please do not enter
-                any of your personal information. If you still want to visit the
-                site, click on the button below.
-              </p>
-            </div>
-            <div class="actions-pd">
-              {/* <button class="cancelBtn-pd">Cancel</button> */}
-              <button onClick={dismiss} class="primaryBtn-pd">
-                Visit the site
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+
+    return <Alert dismiss={dismiss} />;
   }
 
   return <></>;
