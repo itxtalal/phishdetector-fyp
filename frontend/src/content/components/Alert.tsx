@@ -2,9 +2,11 @@ import React from 'react';
 
 interface IProps {
   dismiss: () => void;
+  addToWhiteList: () => void;
+  warn: string;
 }
 
-const Alert: React.FC<IProps> = ({ dismiss }) => {
+const Alert: React.FC<IProps> = ({ dismiss, addToWhiteList, warn }) => {
   return (
     <div className="container-pd">
       <div className="container2-pd">
@@ -21,14 +23,12 @@ const Alert: React.FC<IProps> = ({ dismiss }) => {
               </svg>
             </div>
             <h2 class="heading-pd">Phishing Site Detected!</h2>
-            <p class="description-pd">
-              This site is known to be a phishing site. Please do not enter any
-              of your personal information. If you still want to visit the site,
-              click on the button below.
-            </p>
+            <p class="description-pd">{warn}</p>
           </div>
           <div class="actions-pd">
-            {/* <button class="cancelBtn-pd">Cancel</button> */}
+            <button onClick={addToWhiteList} class="secondaryBtn-pd">
+              Add to WhiteList
+            </button>
             <button onClick={dismiss} class="primaryBtn-pd">
               Visit the site
             </button>
