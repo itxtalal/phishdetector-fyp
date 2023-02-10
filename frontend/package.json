@@ -27,7 +27,7 @@
     "start:firefox": "concurrently npm:watch:firefox npm:reload:firefox",
     "start": "concurrently npm:watch:chrome npm:reload:brave npm:watch:firefox npm:reload:firefox"
   },
-  "author": "Debdut Karmakar <iawaiponly@gmail.com>",
+  "author": "Talal <itxtalal@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.7.2",

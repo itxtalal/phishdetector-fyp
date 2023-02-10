@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Alert from './Alert';
 
-// const API_URL = 'https://api.phishdetector.live/analyze';
-const API_URL = 'http://localhost:5000/analyze';
+const API_URL = 'https://api.phishdetector.live/analyze';
+// const API_URL = 'http://localhost:5000/analyze';
 
 // get all the links extracted from webpage
 const getLinks = () => {
