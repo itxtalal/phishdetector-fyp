@@ -1,7 +1,7 @@
 {
-  "name": "browser-extension",
+  "name": "phish-detector-browser",
   "version": "0.0.1",
-  "description": "Browser Extension Boilerplate",
+  "description": "A browser extension to detect phishing websites",
   "engines": {
     "node": ">=16.13.1",
     "npm": ">=8.1.2"
