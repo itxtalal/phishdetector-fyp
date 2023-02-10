@@ -1,4 +1,5 @@
 import csv
+from urllib.parse import urlparse
 
 from app.db import SessionLocal, Base, engine
 from app.models import PhishingSite
@@ -13,7 +14,12 @@ with open("app/dataset.csv", "r") as file:
     reader = csv.reader(file)
     headers = next(reader)
     for row in reader:
-        data = PhishingSite(url=url_normalize(row[0]))
+        normalized_url = url_normalize(row[0])
+        parsed_url = urlparse(normalized_url)
+
+        data = PhishingSite(
+            domain=parsed_url.netloc, path=parsed_url.path, query=parsed_url.query
+        )
         session.add(data)
 
 session.commit()
