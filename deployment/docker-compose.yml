@@ -2,6 +2,9 @@ version: '3'
 services:
   app:
     image: phishdetector
+    build:
+      context: ../api
+      dockerfile: ../api/Dockerfile
     ports:
       - 8000:8000
     environment:
@@ -11,7 +14,7 @@ services:
       DB_PASSWORD: phishdetector
       DB_NAME: phishdetector
     volumes:
-      - ./:/app
+      - ../api/:/app
   db:
     ports: 
       - 5432:5432
@@ -22,6 +25,16 @@ services:
       POSTGRES_DB: phishdetector
     volumes:
       - db_data:/var/lib/postgresql/data
+
+  ml: 
+    ports: 
+      - 8001:8001
+    image: ml
+    build: 
+      context: ../ml
+      dockerfile: ../ml/Dockerfile
+    volumes:
+      - ../ml:/model
 
 volumes:
   db_data:
