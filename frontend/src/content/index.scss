@@ -89,6 +89,7 @@
   .actions-pd {
     display: flex;
     margin-top: 0.75rem;
+    text-align: center;
     align-items: center;
   }
 
@@ -106,6 +107,7 @@
     font-weight: 500;
     flex: 1 1 0%;
     border-radius: 0.375rem;
+    text-align: center;
     border: none;
   }
 
@@ -120,6 +122,7 @@
     padding-left: 1rem;
     padding-right: 1rem;
     margin-left: 0.5rem;
+    text-align: center;
     font-size: 1rem;
     font-family: 'Inter', sans-serif;
     line-height: 1.25rem;
@@ -144,5 +147,5 @@
 }
 
 .phishing {
-  color: red; // add color to the link (or any other desired style)
+  color: red !important; // add color to the link (or any other desired style)
 }

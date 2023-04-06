@@ -27,7 +27,32 @@ const filterLinks = (links: HTMLAnchorElement[]) => {
 function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [warn, setWarn] = useState('');
+  const [popupText, setPopupText] = useState('');
   const [extensionEnabled, setExtensionEnabled] = useState(false);
+  const [whitelist, setWhitelist] = useState<string[]>([]);
+  const [blacklist, setBlacklist] = useState<string[]>([]);
+
+  useEffect(() => {
+    chrome.storage.sync.get('whitelist', ({ whitelist }) => {
+      setWhitelist(() => whitelist);
+    });
+
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.whitelist) {
+        setWhitelist(() => changes.whitelist.newValue);
+      }
+    });
+
+    chrome.storage.sync.get('blacklist', ({ blacklist }) => {
+      setBlacklist(() => blacklist);
+    });
+
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.blacklist) {
+        setBlacklist(() => changes.blacklist.newValue);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     chrome.storage.sync.get('extensionEnabled', ({ extensionEnabled }) => {
@@ -38,7 +63,6 @@ function App() {
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.extensionEnabled) {
         setExtensionEnabled(() => changes.extensionEnabled.newValue);
-        console.log('new value', changes.extensionEnabled.newValue);
       }
     });
   }, []);
@@ -50,14 +74,56 @@ function App() {
   };
 
   const addToWhiteList = () => {
-    // add current url to whitelist
+    // add current url to whitelist and store it in chrome storage
+    const url = window.location.href;
+
+    // check if whitelist is empty
+    if (!whitelist) {
+      chrome.storage.sync.set({ whitelist: [url] });
+      setWhitelist(() => [url]);
+      dismiss();
+
+      return;
+    }
+
+    // check if url is already in whitelist
+    if (whitelist?.includes(url)) return;
+
+    const newWhitelist = [...whitelist, url];
+
+    chrome.storage.sync.set({ whitelist: newWhitelist });
+    setWhitelist(() => newWhitelist);
+
+    // remove from blacklist
+    if (blacklist?.includes(url)) {
+      const newBlacklist = blacklist?.filter((item) => item !== url);
+      chrome.storage.sync.set({ blacklist: newBlacklist });
+      setBlacklist(() => newBlacklist);
+    }
 
     dismiss();
   };
 
   useEffect(() => {
+    chrome.storage.sync.set({ url: window.location.href });
+  }, []);
+
+  const isUrlWhitelisted = () => {
+    const url = window.location.href;
+    if (!whitelist) return false;
+    return whitelist?.includes(url);
+  };
+
+  const isUrlBlacklisted = () => {
+    const url = window.location.href;
+    if (!blacklist) return false;
+    return blacklist?.includes(url);
+  };
+
+  useEffect(() => {
     if (!extensionEnabled) return;
     const url = window.location.href;
+    if (isUrlWhitelisted()) return;
 
     // - The URL you visited is a phishing site (if domain, path, and query match)
     // - The URL you visited was detected as phishing in another visit (if domain and path match)
@@ -105,6 +171,9 @@ function App() {
 
   useEffect(() => {
     if (!extensionEnabled) return;
+
+    if (isUrlWhitelisted()) return;
+
     const links = getLinks();
     console.log('links', links);
 
@@ -123,9 +192,9 @@ function App() {
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log('data', data);
           if (data.phishing) {
             link.classList.add('phishing');
+            link.style.color = 'red';
           }
         })
         .catch((err) => {
@@ -134,13 +203,31 @@ function App() {
     });
   }, [extensionEnabled]);
 
-  if (showAlert) {
+  if (isUrlWhitelisted()) return <></>;
+
+  if (showAlert && extensionEnabled) {
     // disable scrolling
     document.body.style.overflow = 'hidden';
     document.body.style.height = '100%';
 
     return (
       <Alert dismiss={dismiss} addToWhiteList={addToWhiteList} warn={warn} />
+    );
+  }
+
+  if (isUrlBlacklisted() && extensionEnabled) {
+    // disable scrolling
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100%';
+
+    return (
+      <Alert
+        dismiss={dismiss}
+        addToWhiteList={addToWhiteList}
+        warn={
+          'This URL is blacklisted by you. You can remove it from the extension popup.'
+        }
+      />
     );
   }
 

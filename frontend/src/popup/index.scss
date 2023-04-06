@@ -1,12 +1,179 @@
-#app-root {
-  width: 400px;
-  min-height: 75px;
-  padding: 2px;
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-  h1 {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.phishing {
+  color: red; // add color to the link (or any other desired style)
+}
+
+.popup {
+  padding: 1rem 1.5rem;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: #191919;
+  color: #7a7a7a;
+
+  h3 {
+    padding: 1rem 1.5rem;
+    font-family: 'Inter', sans-serif;
+    height: 100%;
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 2rem;
     text-align: center;
+    color: #fff;
+
+    background: linear-gradient(#ff0000 0 0) var(--p, 0) / var(--p, 0) no-repeat;
+    transition: 0.4s, background-position 0s;
+
+    &:hover {
+      --p: 100%;
+      color: #fff;
+    }
   }
-  p {
-    padding: 6px 6px;
+
+  div {
+    padding: 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+
+      .enabled {
+        color: #00ff00;
+      }
+
+      .disabled {
+        color: #ff0000;
+      }
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+
+    button.enabled {
+      background-color: #8ffa8f;
+
+      &:hover {
+        background-color: #7ff97f;
+      }
+    }
+
+    button.disabled {
+      background-color: #eb7171;
+
+      &:hover {
+        background-color: #e96e6e;
+      }
+    }
+  }
+
+  div.whitelist {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+      width: 100%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background-color: #8ffa8f;
+
+      &:hover {
+        background-color: #7ff97f;
+      }
+    }
+  }
+
+  div.blacklist {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5rem;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      background-color: #eb7171;
+
+      &:hover {
+        background-color: #e96e6e;
+      }
+    }
   }
 }
