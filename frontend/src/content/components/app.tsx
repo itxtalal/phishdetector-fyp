@@ -27,6 +27,21 @@ const filterLinks = (links: HTMLAnchorElement[]) => {
 function App() {
   const [showAlert, setShowAlert] = useState(false);
   const [warn, setWarn] = useState('');
+  const [extensionEnabled, setExtensionEnabled] = useState(false);
+
+  useEffect(() => {
+    chrome.storage.sync.get('extensionEnabled', ({ extensionEnabled }) => {
+      // Set the value of extensionEnabled in state
+      setExtensionEnabled(() => extensionEnabled);
+    });
+
+    chrome.storage.onChanged.addListener((changes) => {
+      if (changes.extensionEnabled) {
+        setExtensionEnabled(() => changes.extensionEnabled.newValue);
+        console.log('new value', changes.extensionEnabled.newValue);
+      }
+    });
+  }, []);
 
   const dismiss = () => {
     setShowAlert(false);
@@ -41,6 +56,7 @@ function App() {
   };
 
   useEffect(() => {
+    if (!extensionEnabled) return;
     const url = window.location.href;
 
     // - The URL you visited is a phishing site (if domain, path, and query match)
@@ -85,9 +101,10 @@ function App() {
       .catch((err) => {
         console.log('err', err);
       });
-  }, []);
+  }, [extensionEnabled]);
 
   useEffect(() => {
+    if (!extensionEnabled) return;
     const links = getLinks();
     console.log('links', links);
 
@@ -108,17 +125,14 @@ function App() {
         .then((data) => {
           console.log('data', data);
           if (data.phishing) {
-            link.style.color = 'red';
-          }
-          if (data.phishing === false) {
-            link.style.color = 'green';
+            link.classList.add('phishing');
           }
         })
         .catch((err) => {
           console.log('err', err);
         });
     });
-  }, []);
+  }, [extensionEnabled]);
 
   if (showAlert) {
     // disable scrolling
