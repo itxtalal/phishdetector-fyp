@@ -1,10 +1,12 @@
-FROM python:3.9@sha256:af38b5d60e73a971088774fd9de87621f5425a55813970ea74357bb2de
+FROM python:3.9
 
 WORKDIR /app
 
 COPY requirements.txt .
 
 RUN pip install -r requirements.txt
+
+RUN pip install requests httpagentparser
 
 COPY . .
 
