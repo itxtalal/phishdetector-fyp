@@ -1,4 +1,5 @@
 import httpagentparser
+from datetime import datetime, timedelta
 
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy import func
@@ -92,6 +93,20 @@ async def statistics(db: Session = Depends(get_db)):
         .all()
     )
 
+    today = datetime.utcnow().date()
+    detections_per_day = [0] * 7
+    for i in range(7):
+        day = today - timedelta(days=i)
+        detections = (
+            db.query(Detection)
+            .filter(
+                Detection.timestamp >= day,
+                Detection.timestamp < day + timedelta(days=1),
+            )
+            .count()
+        )
+        detections_per_day[len(detections_per_day) - i - 1] = detections
+
     return {
         "total_blacklisted_sites": db.query(PhishingSite).count(),
         "detections": {
@@ -99,5 +114,10 @@ async def statistics(db: Session = Depends(get_db)):
             "by_browser": dict(count_by_browser),
             "by_os": dict(count_by_os),
             "by_detection_type": dict(count_by_detection_type),
+            "last_week": detections_per_day,
         },
     }
+
+    session.close()
+
+    return {"detections": detections_per_day}
