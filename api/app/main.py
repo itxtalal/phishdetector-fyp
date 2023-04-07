@@ -41,6 +41,13 @@ async def analyze(
         db.commit()
         return blacklist_result
 
+    return {
+        "phishing": False,
+        "domain": False,
+        "path": False,
+        "query": False,
+    }
+
     probabilities = analyze_url(url)
 
     if probabilities["phishing"] > probabilities["safe"]:
