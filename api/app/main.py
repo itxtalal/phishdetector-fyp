@@ -14,8 +14,6 @@ from app.models import PhishingSite, Detection
 
 app = FastAPI()
 
-app.add_middleware(CORSMiddleware, allow_origins=["*"])
-
 
 class AnalyzeRequestBody(BaseModel):
     url: AnyUrl
