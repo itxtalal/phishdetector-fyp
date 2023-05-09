@@ -25,15 +25,22 @@ const BlackListedTable = () => {
   };
 
   const handleDeleteRecord = async (selectedDomains) => {
-    console.log(selectedDomains);
-    response = await axios.delete(`${BASE_URL}/blacklist/`, {
-      data: {
-        domains: selectedDomains,
+    const response = await fetch(`${BASE_URL}/blacklist`, {
+      body: JSON.stringify({ domains: selectedDomains }),
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
       },
     });
-    if (response.status === 200) {
+    const data = await response.json();
+    if (data.blacklist_deleted) {
       toast.success(
-        `Successfully removed ${response.data.deleted} domains from the blacklist`
+        `Successfully removed ${data.blacklist_deleted} URLs for the selected domains`
+      );
+    }
+    if (data.detections_deleted) {
+      toast.success(
+        `Successfully removed ${data.detections_deleted} detections from the database`
       );
     }
     await fetchBlackListedSites();

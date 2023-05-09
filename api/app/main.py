@@ -6,10 +6,11 @@ from typing import Optional, List
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session, aliased
-from pydantic import BaseModel, AnyUrl
+from pydantic import BaseModel, AnyUrl, 
 from url_normalize import url_normalize
 from urllib.parse import urlparse
 from fastapi_pagination import Page, add_pagination, paginate, Params
+# from fastapi.middleware.cors import CORSMiddleware
 
 
 from app.db import get_db
@@ -18,6 +19,13 @@ from app.models import PhishingSite, Detection, Domain
 
 app = FastAPI()
 add_pagination(app)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 
 class AnalyzeRequestBody(BaseModel):
@@ -248,12 +256,17 @@ async def remove_blacklist(
     request_body: RemoveBlacklistRequestBody,
     db: Session = Depends(get_db),
 ):
-    domain_ids = request_body.domain_ids
     subquery = (
         db.query(PhishingSite.id)
         .join(PhishingSite.domain)
         .filter(Domain.name.in_(request_body.domains))
         .subquery()
+    )
+
+    detections_deleted = (
+        db.query(Detection)
+        .filter(Detection.phishing_site_id.in_(subquery))
+        .delete(synchronize_session="fetch")
     )
 
     deleted = (
@@ -263,4 +276,4 @@ async def remove_blacklist(
     )
 
     db.commit()
-    return {"deleted": deleted}
+    return {"detections_deleted": detections_deleted, "blacklist_deleted": deleted}
