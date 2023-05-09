@@ -6,10 +6,11 @@ from typing import Optional, List
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session, aliased
-from pydantic import BaseModel, AnyUrl, 
+from pydantic import BaseModel, AnyUrl
 from url_normalize import url_normalize
 from urllib.parse import urlparse
 from fastapi_pagination import Page, add_pagination, paginate, Params
+
 # from fastapi.middleware.cors import CORSMiddleware
 
 
