@@ -1,19 +1,26 @@
 import httpagentparser
 from datetime import datetime, timedelta
+from typing import Optional
+
 
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy import func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
+from sqlalchemy.sql.expression import label
+from sqlalchemy import select, distinct
 from pydantic import BaseModel, AnyUrl
 from url_normalize import url_normalize
-from fastapi.middleware.cors import CORSMiddleware
 from urllib.parse import urlparse
+from fastapi_pagination import Page, add_pagination, paginate, Params
+from sqlalchemy import or_
+
 
 from app.db import get_db
-from app.utils import analyze_url, lookup_url_in_blacklist
-from app.models import PhishingSite, Detection
+from app.utils import analyze_url, lookup_url_in_blacklist, get_url_params
+from app.models import PhishingSite, Detection, Domain
 
 app = FastAPI()
+add_pagination(app)
 
 
 class AnalyzeRequestBody(BaseModel):
@@ -37,7 +44,21 @@ async def analyze(
     blacklist_result = lookup_url_in_blacklist(url, db)
 
     if any(blacklist_result.values()):
-        db.add(Detection(url=url, detection_type="blacklist", browser=browser, os=os))
+        if all(blacklist_result.values()):
+            phishing_site = (
+                db.query(PhishingSite).filter_by(**get_url_params(db, url)).first()
+            )
+        else:
+            phishing_site = db.add(PhishingSite(**get_url_params(db, url)))
+            db.commit()
+        db.add(
+            Detection(
+                detection_type="blacklist",
+                browser=browser,
+                os=os,
+                phishing_site=phishing_site,
+            )
+        )
         db.commit()
         return blacklist_result
 
@@ -114,6 +135,37 @@ async def statistics(db: Session = Depends(get_db)):
         )
         detections_per_day[len(detections_per_day) - i - 1] = detections
 
+    detections_last_month = [0] * 30
+    for i in range(30):
+        day = today - timedelta(days=i)
+        detections = (
+            db.query(Detection)
+            .filter(
+                Detection.timestamp >= day,
+                Detection.timestamp < day + timedelta(days=1),
+            )
+            .count()
+        )
+        detections_last_month[len(detections_last_month) - i - 1] = detections
+
+    start_of_current_month = today.replace(day=1)
+    start_of_last_12_months = start_of_current_month - timedelta(days=365)
+
+    detections_per_month = [0] * 12
+
+    for i in range(12):
+        start_of_month = start_of_last_12_months + timedelta(days=i * 30)
+        end_of_month = start_of_last_12_months + timedelta(days=(i + 1) * 30)
+        detections = (
+            db.query(Detection)
+            .filter(
+                Detection.timestamp >= start_of_month,
+                Detection.timestamp < end_of_month,
+            )
+            .count()
+        )
+        detections_per_month[i] = detections
+
     return {
         "total_blacklisted_sites": db.query(PhishingSite).count(),
         "detections": {
@@ -122,9 +174,68 @@ async def statistics(db: Session = Depends(get_db)):
             "by_os": dict(count_by_os),
             "by_detection_type": dict(count_by_detection_type),
             "last_week": detections_per_day,
+            "last_month": detections_last_month,
+            "last_year": detections_per_month,
         },
     }
 
-    session.close()
 
-    return {"detections": detections_per_day}
+@app.get("/blacklist")
+async def get_blacklist(
+    session: Session = Depends(get_db),
+    params: Params = Depends(),
+    search: Optional[str] = None,
+    response_model=Page[PhishingSite],
+):
+
+    # Create an alias for the Detection model to be used in the subquery
+    DetectionAlias = aliased(Detection)
+
+    # Define the subquery to get the last detection time for each domain
+    subquery_last_detection = (
+        session.query(
+            DetectionAlias.phishing_site_id,
+            func.max(DetectionAlias.timestamp).label("last_detection_time"),
+        )
+        .group_by(DetectionAlias.phishing_site_id)
+        .subquery()
+    )
+
+    # Main query
+    results = (
+        session.query(
+            Domain.id,
+            Domain.name,
+            func.coalesce(func.count(Detection.id), 0).label("total_detections"),
+            func.coalesce(
+                func.max(subquery_last_detection.c.last_detection_time), None
+            ).label("last_detection_time"),
+        )
+        .outerjoin(PhishingSite, Domain.id == PhishingSite.domain_id)
+        .outerjoin(Detection, PhishingSite.id == Detection.phishing_site_id)
+        .outerjoin(
+            subquery_last_detection,
+            PhishingSite.id == subquery_last_detection.c.phishing_site_id,
+        )
+        .group_by(Domain.id)
+    )
+
+    if search:
+        search = f"%{search}%"
+        results = results.filter(
+            Domain.name.ilike(search),
+        )
+
+    # Convert the results into the response model
+    response = [
+        {
+            "id": row[0],
+            "domain": row[1],
+            "total_detections": row[2] or 0,
+            "last_detection_date": row[3],
+        }
+        for row in results.all()
+    ]
+
+    # TODO: Avoid storing all data in memory, do all filtering in SQL
+    return paginate(response, params=params)

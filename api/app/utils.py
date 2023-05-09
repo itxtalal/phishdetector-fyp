@@ -2,7 +2,7 @@ import requests
 import json
 from urllib.parse import urlparse
 
-from app.models import PhishingSite
+from app.models import PhishingSite, Domain
 
 ML_API_URL = "http://ml:8001/predict"
 
@@ -28,7 +28,9 @@ def analyze_url(url: str) -> dict:
 def lookup_url_in_blacklist(url: str, db) -> dict:
 
     parsed_url = urlparse(url)
-    domain_matched_sites = db.query(PhishingSite).filter_by(domain=parsed_url.netloc)
+    domain_matched_sites = db.query(PhishingSite).filter_by(
+        domain=Domain.get_or_create(db, parsed_url.netloc)
+    )
 
     if not domain_matched_sites.first():
         return {
@@ -61,4 +63,14 @@ def lookup_url_in_blacklist(url: str, db) -> dict:
         "domain": True,
         "path": True,
         "query": True,
+    }
+
+
+def get_url_params(db, url: str) -> dict:
+
+    parsed_url = urlparse(url)
+    return {
+        "domain": Domain.get_or_create(db, parsed_url.netloc),
+        "path": parsed_url.path,
+        "query": parsed_url.query,
     }
