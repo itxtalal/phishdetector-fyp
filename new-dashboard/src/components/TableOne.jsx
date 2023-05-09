@@ -26,13 +26,13 @@ const TableOne = ({
     saveAs(blob, "mydata.csv");
   };
 
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedDomains, setSelectedDomains] = useState([]);
 
-  const handleCheckboxChange = (event, id) => {
+  const handleCheckboxChange = (event, domain_name) => {
     if (event.target.checked) {
-      setSelectedIds([...selectedIds, id]);
+      setSelectedDomains([...selectedDomains, domain_name]);
     } else {
-      setSelectedIds(selectedIds.filter((selectedId) => selectedId !== id));
+      setSelectedDomains(selectedDomains.filter((d) => d !== domain_name));
     }
   };
 
@@ -70,12 +70,12 @@ const TableOne = ({
                 </h1>
 
                 <div className="bg-red-500 relative mx-4 flex w-8 items-center">
-                  {selectedIds.length > 0 && (
+                  {selectedDomains.length > 0 && (
                     <img
                       src={TrashLogo}
                       alt="trash"
                       width={15}
-                      onClick={handleDeleteRecord.bind(null, selectedIds)}
+                      onClick={handleDeleteRecord.bind(null, selectedDomains)}
                       className="inline cursor-pointer opacity-100 transition-opacity duration-300 ease-in-out hover:opacity-75"
                       style={{ transitionDelay: "300ms" }}
                     />
@@ -103,26 +103,32 @@ const TableOne = ({
                           <th className="px-6 py-3 text-left text-center font-medium">
                             Times Blocked
                           </th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody className="overflow-auto bg-white">
                         {records ? (
-                          records.map((item) => (
-                            <tr className="bg-white dark:border-strokedark dark:bg-boxdark">
+                          records.map((item, index) => (
+                            <tr
+                              className="bg-white dark:border-strokedark dark:bg-boxdark"
+                              key={index}
+                            >
                               <td className="whitespace-no-wrap border-gray-100  border-b px-6 py-2 text-center">
                                 <label class="custom-label relative flex items-center p-2">
                                   <div class="absolute flex h-4 w-4 -translate-x-1	items-center justify-center rounded border bg-transparent">
                                     <input
                                       type="checkbox"
                                       class="hidden"
-                                      checked={selectedIds.includes(item.id)}
+                                      checked={selectedDomains.includes(
+                                        item.domain
+                                      )}
                                       onChange={() =>
-                                        handleCheckboxChange(event, item.id)
+                                        handleCheckboxChange(event, item.domain)
                                       }
                                     />
                                     <svg
                                       className={`text-purple pointer-events-none absolute h-4 w-4 ${
-                                        selectedIds.includes(item.id)
+                                        selectedDomains.includes(item.domain)
                                           ? ""
                                           : "hidden"
                                       }`}
@@ -160,6 +166,16 @@ const TableOne = ({
                               <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
                                 <div className="text-blue-500 text-sm leading-5">
                                   {item.total_detections}
+                                </div>
+                              </td>
+                              <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
+                                <div className="text-blue-500 text-sm leading-5">
+                                  <button
+                                    class="text-pink-500 border-pink-500 hover:bg-pink-500 active:bg-pink-600 hover:bg-blue mb-1 mr-1 rounded border px-4 py-2 font-bold uppercase outline-none transition-all duration-150 ease-linear hover:bg-primary hover:text-white focus:outline-none"
+                                    type="button"
+                                  >
+                                    Details
+                                  </button>
                                 </div>
                               </td>
                               {/* <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">

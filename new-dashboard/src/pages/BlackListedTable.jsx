@@ -3,8 +3,9 @@ import DefaultLayout from "../layout/DefaultLayout";
 import Breadcrumb from "../components/Breadcrumb";
 import TableOne from "../components/TableOne";
 import useFetch from "../hooks/useFetch";
-import { deleteItem } from "../utils/helperFunctions";
 import { BASE_URL } from "../config";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const BlackListedTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -23,14 +24,18 @@ const BlackListedTable = () => {
     setCurrentPage(pageNo);
   };
 
-  const handleDeleteRecord = async (recordIds) => {
-    console.log("Selected Item Deleted with following ids");
-    console.log(recordIds);
-    const config = {
-      url: "http://localhost:4000/blacklist/",
-      paramsId: recordIds,
-    };
-    await deleteItem(config);
+  const handleDeleteRecord = async (selectedDomains) => {
+    console.log(selectedDomains);
+    response = await axios.delete(`${BASE_URL}/blacklist/`, {
+      data: {
+        domains: selectedDomains,
+      },
+    });
+    if (response.status === 200) {
+      toast.success(
+        `Successfully removed ${response.data.deleted} domains from the blacklist`
+      );
+    }
     await fetchBlackListedSites();
   };
 

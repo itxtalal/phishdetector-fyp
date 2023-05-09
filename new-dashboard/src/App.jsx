@@ -1,10 +1,12 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Analytics from "./pages/Dashboard/Analytics";
 import Profile from "./pages/Profile";
 import ManageSites from "./pages/Form/ManageSites";
 import BlackListedTable from "./pages/BlackListedTable";
-import WhiteListedTable from './pages/WhiteListedTable'
+import WhiteListedTable from "./pages/WhiteListedTable";
 import Settings from "./pages/Settings";
 import Chart from "./pages/Chart";
 import SignIn from "./pages/Authentication/SignIn";
@@ -52,6 +54,7 @@ const App = () => {
           <Route path="/auth/signin" element={<SignIn />} />
           <Route path="/auth/signup" element={<SignUp />} />
         </Routes>
+        <ToastContainer />
       </>
     )
   );

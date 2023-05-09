@@ -1,18 +1,15 @@
 import httpagentparser
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy import func
 from sqlalchemy.orm import Session, aliased
-from sqlalchemy.sql.expression import label
-from sqlalchemy import select, distinct
 from pydantic import BaseModel, AnyUrl
 from url_normalize import url_normalize
 from urllib.parse import urlparse
 from fastapi_pagination import Page, add_pagination, paginate, Params
-from sqlalchemy import or_
 
 
 from app.db import get_db
@@ -239,3 +236,31 @@ async def get_blacklist(
 
     # TODO: Avoid storing all data in memory, do all filtering in SQL
     return paginate(response, params=params)
+
+
+class RemoveBlacklistRequestBody(BaseModel):
+    domains: List[str]
+
+
+@app.delete("/blacklist")
+async def remove_blacklist(
+    request: Request,
+    request_body: RemoveBlacklistRequestBody,
+    db: Session = Depends(get_db),
+):
+    domain_ids = request_body.domain_ids
+    subquery = (
+        db.query(PhishingSite.id)
+        .join(PhishingSite.domain)
+        .filter(Domain.name.in_(request_body.domains))
+        .subquery()
+    )
+
+    deleted = (
+        db.query(PhishingSite)
+        .filter(PhishingSite.id.in_(subquery))
+        .delete(synchronize_session="fetch")
+    )
+
+    db.commit()
+    return {"deleted": deleted}

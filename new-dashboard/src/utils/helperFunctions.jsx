@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const url = "";
-
 export const blackListDomain = async ({ domain }) => {
   try {
     const res = await axios.post("", domain);
