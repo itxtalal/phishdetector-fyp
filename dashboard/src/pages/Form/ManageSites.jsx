@@ -3,6 +3,7 @@ import DefaultLayout from "../../layout/DefaultLayout";
 import Breadcrumb from "../../components/Breadcrumb";
 import { BlackSchema, WhiteSchema } from "../../utils/constants";
 import { Formik } from "formik";
+import { blackListDomain, whiteListDomain } from "../../utils/helperFunctions";
 
 const url1 = "";
 const url2 = "";
@@ -13,19 +14,19 @@ const ManageSites = () => {
 
   const handleWhitelist = async (values, { isSubmitting }) => {
     // fetch("");
-    const res = await WhiteListDomain(values);
+    const res = await whiteListDomain(values);
     if (res?.status === 200) isSubmitting(false);
 
     // console.log(values);
   };
 
   const handleBlackList = async (values, { isSubmitting }) => {
-    const res = await BlackListDomain(values);
+    const res = await blackListDomain(values);
     if (res?.status === 200) isSubmitting(false);
   };
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="ManageSites" />
+      <Breadcrumb pageName="Manage Sites" />
 
       <div className="grid grid-cols-1 gap-9 px-[25%] sm:grid-cols-1">
         <div className="flex flex-col gap-9">
@@ -61,7 +62,7 @@ const ManageSites = () => {
                         <input
                           type="text"
                           name="domain"
-                          placeholder="Default Input"
+                          placeholder="Type Sites to Blacklist"
                           onChange={handleChange}
                           value={values.domain}
                           onBlur={handleBlur}
@@ -112,7 +113,7 @@ const ManageSites = () => {
                         <input
                           type="text"
                           name="domain"
-                          placeholder="Default Input"
+                          placeholder="Type Sites to Whitelist"
                           onChange={handleChange}
                           value={values.domain}
                           onBlur={handleBlur}

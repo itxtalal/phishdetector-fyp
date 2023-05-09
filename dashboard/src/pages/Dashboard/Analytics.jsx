@@ -11,12 +11,16 @@ import ViewIcon from "/src/images/icon/eye-icon.svg";
 import CheckMarkIcon from "/src/images/icon/check-mark-icon.svg";
 import AvgIcon from "/src/images/icon/calculator-icon.svg";
 import UserIcon from "/src/images/icon/users-icon.svg";
+import { BASE_URL } from "../../config";
 
 const Analytics = () => {
+  const [timeFrame, setTimeFrame] = React.useState("week");
+
   const { error, response, loading } = useFetch(
-    "https://mocki.io/v1/8a42df10-d2fc-4991-a0a0-179076c7f914",
+    `${BASE_URL}/statistics`,
     "token"
   );
+
   const {
     error: bError,
     response: bResponse,
@@ -25,7 +29,7 @@ const Analytics = () => {
     "https://642a2247b11efeb75993bc29.mockapi.io/blacklisted",
     "token"
   );
-  // console.log(response);
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
@@ -59,17 +63,16 @@ const Analytics = () => {
         />
       </div>
 
-{
-  !bLoading && <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-  <ChartOne />
-  <ChartTwo />
-  <ChartThree />
-  <div className="col-span-12">
-    <TableOne fetchedRecords={bResponse} />
-  </div>
-</div>
-}
-      
+      {!bLoading && (
+        <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
+          <ChartOne />
+          <ChartTwo />
+          <ChartThree />
+          <div className="col-span-12">
+            <TableOne fetchedRecords={bResponse} />
+          </div>
+        </div>
+      )}
     </DefaultLayout>
   );
 };

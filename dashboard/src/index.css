@@ -149,3 +149,36 @@ span.flatpickr-weekday,
 [x-cloak] {
   display: none !important;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  margin: 0;
+  box-sizing: border-box;
+  background-color: transparent;
+  overflow-x: hidden;
+}
+
+*::-webkit-scrollbar {
+  background-color: transparent;
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #a6a6a6;
+  border-radius: 16px;
+  border: 4px solid transparent;
+}
+
+*::-webkit-scrollbar-button {
+  display: none;
+}

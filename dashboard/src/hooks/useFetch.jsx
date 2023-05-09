@@ -43,7 +43,7 @@ const useFetch = (url, token) => {
     fetchData();
   }, [url]);
 
-  return { response, error, loading };
+  return { response, error, loading, fetchData };
 };
 
 export default useFetch;
