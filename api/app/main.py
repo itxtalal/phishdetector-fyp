@@ -12,7 +12,7 @@ from url_normalize import url_normalize
 from urllib.parse import urlparse
 from fastapi_pagination import Page, add_pagination, paginate, Params
 
-# from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
 from app.db import get_db
@@ -21,13 +21,13 @@ from app.models import PhishingSite, Detection, Domain
 
 app = FastAPI()
 add_pagination(app)
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class AnalyzeRequestBody(BaseModel):
@@ -75,13 +75,6 @@ async def analyze(
         )
         db.commit()
         return blacklist_result
-
-    return {
-        "phishing": False,
-        "domain": False,
-        "path": False,
-        "query": False,
-    }
 
     probabilities = analyze_url(url)
 

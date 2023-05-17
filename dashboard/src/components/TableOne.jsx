@@ -168,16 +168,7 @@ const TableOne = ({
                                   {item.total_detections}
                                 </div>
                               </td>
-                              <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
-                                <div className="text-blue-500 text-sm leading-5">
-                                  <button
-                                    class="text-pink-500 border-pink-500 hover:bg-pink-500 active:bg-pink-600 hover:bg-blue mb-1 mr-1 rounded border px-4 py-2 font-bold uppercase outline-none transition-all duration-150 ease-linear hover:bg-primary hover:text-white focus:outline-none"
-                                    type="button"
-                                  >
-                                    Details
-                                  </button>
-                                </div>
-                              </td>
+                              <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center"></td>
                               {/* <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
                                 <img
                                   src={TrashLogo}
