@@ -1,4 +1,5 @@
 import Logo from "./logo.png";
+import Blocked from './blocked.png'
 
 export default function () {
   return (
@@ -9,19 +10,19 @@ export default function () {
             <img src={Logo} className="mx-auto" />
           </div>
           <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
-            Stay safe on the internet
-            <span className="sm:block"> with the power of ML. </span>
+            Smart, Secure and Seamless.
+            <span className="sm:block">Your AI guard against Phishing. </span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            PhishDetector identifies patterns in phishing URLs and blocks them
-            FAST to help you stay safe on the internet
+          <p className="mx-auto mt-5 max-w-xl sm:text-xl sm:leading-relaxed">
+            PhishDetector combines lexical ML models with existing datasets to
+            detect phishing URLs effectively.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
               className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              href="https://github.com/hanif-ali/phishdetector"
+              href="https://github.com/hanif-ali/phishdetector/releases/tag/v1"
             >
               Get the extension
             </a>
@@ -36,18 +37,29 @@ export default function () {
               className="block w-full rounded border border-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
               href="http://dashboard.phishdetector.live"
             >
-              Analytics Report
+              Analytics Dashboard (Admin Only)
             </a>
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center" id="demo">
+      <div
+        className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
+        id="demo"
+      >
+        <div className="w-1/2">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+            Automatically detects phishing URLs on your webpages
+          </h1>
+        </div>
         <div className="mx-auto text-center">
           <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
-            Example Sites
+            Demo
           </h1>
           <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            Following are some example of phishing and safe websites. If you enable the extension, the phishing sites will be blocked.
+            The URLs on the left are identified Phishing URLs. 
+          </p>
+          <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
+            If you have the extension installed, <span className="text-red-500">they will be highlighted in red.</span>
           </p>
 
           <div className="flex flex-row justify-center mt-9">
@@ -91,6 +103,25 @@ export default function () {
                 <br />
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
+        id="demo"
+      >
+        <div className="w-1/2">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+            Disallow access to any websites that are identified as phishing
+          </h1>
+        </div>
+        <div className="mx-auto text-center w-1/2">
+          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+            Demo
+          </h1>
+
+          <div className="flex flex-row justify-center mt-9">
+            <img src={Blocked} />
           </div>
         </div>
       </div>

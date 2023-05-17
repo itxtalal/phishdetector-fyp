@@ -1,25 +1,17 @@
 import React, { useState } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
-import Breadcrumb from "../components/Breadcrumb";
-import ChartFour from "../components/ChartFour";
 import ChartOne from "../components/ChartOne";
 import ChartTwo from "../components/ChartTwo";
-import ChartThree from "../components/ChartThree";
 import Card from "../components/Card";
 import ViewIcon from "/src/images/icon/eye-icon.svg";
 import XMark from "/src/images/icon/xmark-solid.svg";
 import useFetch from "../hooks/useFetch";
-import CheckMarkIcon from "/src/images/icon/check-mark-icon.svg";
-import AvgIcon from "/src/images/icon/calculator-icon.svg";
-import UserIcon from "/src/images/icon/users-icon.svg";
+import { BASE_URL } from "../config";
 
 const Chart = () => {
   const [timeFrame, setTimeFrame] = useState("week");
   //TODO: update the url
-  const { error, response, loading } = useFetch(
-    "https://api.phishdetector.live/statistics",
-    "token"
-  );
+  const { error, response, loading } = useFetch(`${BASE_URL}/statistics`);
 
   const handleTimeFrameChange = (e) => {
     setTimeFrame(e.target.value);

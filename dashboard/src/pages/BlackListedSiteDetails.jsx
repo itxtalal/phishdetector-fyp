@@ -6,11 +6,15 @@ import useFetch from "../hooks/useFetch";
 import { BASE_URL } from "../config";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const BlackListedTable = () => {
+const BlackListedSiteDetails = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
 
+  const { id } = useParams();
+  
+  //TODO: change the url and fetch details
   const {
     error,
     response: blacklistedSites,
@@ -42,10 +46,12 @@ const BlackListedTable = () => {
     }
     await fetchBlackListedSites();
   };
+  
+  
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Blacklisted Sites" />
+      <Breadcrumb pageName="Site Details" />
       {!loading ? (
         <div className="flex flex-col gap-10">
           <TableOne
@@ -62,8 +68,9 @@ const BlackListedTable = () => {
       ) : (
         <div className="mt-50 flex justify-center">Loading...</div>
       )}
+      
     </DefaultLayout>
   );
 };
 
-export default BlackListedTable;
+export default BlackListedSiteDetails;

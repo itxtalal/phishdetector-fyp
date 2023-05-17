@@ -24,4 +24,14 @@ with open("app/dataset.csv", "r") as file:
         )
         session.add(data)
 
+with open("app/safe_domains.csv", "r") as file:
+    reader = csv.reader(file)
+    headers = next(reader)
+    for row in reader:
+        normalized_url = url_normalize(row[0])
+        parsed_url = urlparse(normalized_url)
+        domain = Domain.get_or_create(session, parsed_url.netloc)
+        domain.whitelisted = True
+        session.add(domain)
+
 session.commit()

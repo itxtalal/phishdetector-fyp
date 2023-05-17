@@ -1,6 +1,7 @@
 import httpagentparser
 from datetime import datetime, timedelta
 from typing import Optional, List
+from url_normalize import url_normalize
 
 
 from fastapi import FastAPI, Depends, Request
@@ -47,15 +48,22 @@ async def analyze(
         browser = parsed_user_agent.get("browser", {}).get("name", "Not Detected")
         os = parsed_user_agent.get("os", {}).get("name", "Not Detected")
 
+    url_params = get_url_params(db, url)
+    if url_params["domain"].whitelisted:
+        return {
+            "phishing": False,
+            "domain": False,
+            "path": False,
+            "query": False,
+        }
+
     blacklist_result = lookup_url_in_blacklist(url, db)
 
     if any(blacklist_result.values()):
         if all(blacklist_result.values()):
-            phishing_site = (
-                db.query(PhishingSite).filter_by(**get_url_params(db, url)).first()
-            )
+            phishing_site = db.query(PhishingSite).filter_by(**url_params).first()
         else:
-            phishing_site = db.add(PhishingSite(**get_url_params(db, url)))
+            phishing_site = db.add(PhishingSite(**url_params))
             db.commit()
         db.add(
             Detection(
@@ -217,7 +225,7 @@ async def get_blacklist(
                 func.max(subquery_last_detection.c.last_detection_time), None
             ).label("last_detection_time"),
         )
-        .outerjoin(PhishingSite, Domain.id == PhishingSite.domain_id)
+        .join(PhishingSite, Domain.id == PhishingSite.domain_id)
         .outerjoin(Detection, PhishingSite.id == Detection.phishing_site_id)
         .outerjoin(
             subquery_last_detection,
@@ -247,34 +255,83 @@ async def get_blacklist(
     return paginate(response, params=params)
 
 
-class RemoveBlacklistRequestBody(BaseModel):
+class DomainsBody(BaseModel):
     domains: List[str]
+
+
+@app.post("/blacklist")
+async def add_blacklist(
+    request: Request,
+    request_body: DomainsBody,
+    db: Session = Depends(get_db),
+):
+    urls = [url_normalize(d) for d in request_body.domains]
+    for url in urls:
+        url_params = get_url_params(db, url)
+        db.add(PhishingSite(**url_params))
+
+    db.commit()
+    return {"urls_added": len(urls)}
 
 
 @app.delete("/blacklist")
 async def remove_blacklist(
     request: Request,
-    request_body: RemoveBlacklistRequestBody,
+    request_body: DomainsBody,
     db: Session = Depends(get_db),
 ):
-    subquery = (
-        db.query(PhishingSite.id)
-        .join(PhishingSite.domain)
-        .filter(Domain.name.in_(request_body.domains))
-        .subquery()
-    )
-
-    detections_deleted = (
-        db.query(Detection)
-        .filter(Detection.phishing_site_id.in_(subquery))
-        .delete(synchronize_session="fetch")
-    )
-
-    deleted = (
-        db.query(PhishingSite)
-        .filter(PhishingSite.id.in_(subquery))
-        .delete(synchronize_session="fetch")
-    )
+    domains = [Domain.get_or_create(db, d) for d in request_body.domains]
+    for domain in domains:
+        print("domain: ", domain)
+        for phishing_site in domain.phishing_sites:
+            print(phishing_site)
+            db.delete(phishing_site)
 
     db.commit()
-    return {"detections_deleted": detections_deleted, "blacklist_deleted": deleted}
+    return {"domains_deleted": len(domains)}
+
+
+@app.get("/whitelist")
+async def get_whitelist(
+    session: Session = Depends(get_db),
+    params: Params = Depends(),
+    search: Optional[str] = None,
+    response_model=Page[PhishingSite],
+):
+    results = session.query(Domain).filter_by(whitelisted=True)
+
+    if search:
+        search = f"%{search}%"
+        results = results.filter(
+            Domain.name.ilike(search),
+        )
+
+    return paginate(results.all(), params=params)
+
+
+@app.post("/whitelist")
+async def add_to_whitelist(
+    request_body: DomainsBody,
+    db: Session = Depends(get_db),
+):
+    domains = request_body.domains
+    domains = [Domain.get_or_create(db, d) for d in domains]
+    for domain in domains:
+        domain.whitelisted = True
+        db.add(domain)
+    db.commit()
+    return {"domains_added": len(domains)}
+
+
+@app.delete("/whitelist")
+async def delete_from_whitelist(
+    request_body: DomainsBody,
+    db: Session = Depends(get_db),
+):
+    domains = request_body.domains
+    domains = [Domain.get_or_create(db, d) for d in domains]
+    for domain in domains:
+        domain.whitelisted = False
+        db.add(domain)
+    db.commit()
+    return {"domains_removed": len(domains)}

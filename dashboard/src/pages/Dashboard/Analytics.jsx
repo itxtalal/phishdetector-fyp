@@ -25,10 +25,7 @@ const Analytics = () => {
     error: bError,
     response: bResponse,
     loading: bLoading,
-  } = useFetch(
-    "https://642a2247b11efeb75993bc29.mockapi.io/blacklisted",
-    "token"
-  );
+  } = useFetch("https://642a2247b11efeb75993bc29.mockapi.io/blacklisted");
 
   return (
     <DefaultLayout>

@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
 
 from app.db import Base
@@ -15,7 +15,9 @@ class PhishingSite(Base):
     domain_id = Column(Integer, ForeignKey("domains.id"))
     domain = relationship("Domain", back_populates="phishing_sites")
 
-    detections = relationship("Detection", back_populates="phishing_site")
+    detections = relationship(
+        "Detection", back_populates="phishing_site", cascade="all, delete-orphan"
+    )
 
 
 class Detection(Base):
@@ -36,6 +38,7 @@ class Domain(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, unique=True)
+    whitelisted = Column(Boolean, default=False)
     phishing_sites = relationship("PhishingSite", back_populates="domain")
 
     @classmethod

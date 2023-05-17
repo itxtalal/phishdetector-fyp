@@ -5,7 +5,6 @@ import Papa from "papaparse";
 
 import SearchSolid from "/src/images/icon/search-solid.svg";
 import Pagination from "./Pagination";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const TableOne = ({
   title,
@@ -17,12 +16,6 @@ const TableOne = ({
 }) => {
   const [records, setRecords] = useState(fetchedRecords?.items ?? []);
   const [searchText, setSearchText] = useState("");
-
-  const navigate = useNavigate();
-  const location = useLocation();
-  const params = useParams();
-  console.log(location);
-  console.log(params);
 
   const handleCSV = async () => {
     const csvDataUnparsed = Papa.unparse(records, { header: true });
@@ -45,11 +38,6 @@ const TableOne = ({
 
   const handleSearch = () => {
     onSearch(searchText);
-  };
-
-  // Function to handle navigation
-  const goToDetailedPage = (id) => {
-    navigate(`${location.pathname}/${id}`);
   };
 
   return (
@@ -109,13 +97,6 @@ const TableOne = ({
                           <th className="px-6 py-3 text-left text-center font-medium">
                             Name
                           </th>
-                          <th className="px-6 py-3 text-left text-center font-medium">
-                            Last Detected
-                          </th>
-                          <th className="px-6 py-3 text-left text-center font-medium">
-                            Times Blocked
-                          </th>
-                          <th></th>
                         </tr>
                       </thead>
                       <tbody className="overflow-auto bg-white">
@@ -132,15 +113,15 @@ const TableOne = ({
                                       type="checkbox"
                                       class="hidden"
                                       checked={selectedDomains.includes(
-                                        item.domain
+                                        item.name
                                       )}
                                       onChange={() =>
-                                        handleCheckboxChange(event, item.domain)
+                                        handleCheckboxChange(event, item.name)
                                       }
                                     />
                                     <svg
                                       className={`text-purple pointer-events-none absolute h-4 w-4 ${
-                                        selectedDomains.includes(item.domain)
+                                        selectedDomains.includes(item.name)
                                           ? ""
                                           : "hidden"
                                       }`}
@@ -161,53 +142,10 @@ const TableOne = ({
                                     </svg>
                                   </div>
                                   <span class="mx-auto select-none">
-                                    {item.domain}
+                                    {item.name}
                                   </span>
                                 </label>
                               </td>
-
-                              <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
-                                <div className="text-blue-500 text-sm leading-5">
-                                  {item.last_detection_date
-                                    ? new Date(
-                                        item.last_detection_date
-                                      ).toLocaleString()
-                                    : "-"}
-                                </div>
-                              </td>
-                              <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
-                                <div className="text-blue-500 text-sm leading-5">
-                                  {item.total_detections}
-                                </div>
-                              </td>
-                              {!Object.keys(params).length && (
-                                <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
-                                  <div className="text-blue-500 text-sm leading-5">
-                                    <button
-                                      class="text-pink-500 border-pink-500 hover:bg-pink-500 active:bg-pink-600 hover:bg-blue mb-1 mr-1 rounded border px-4 py-2 font-bold uppercase outline-none transition-all duration-150 ease-linear hover:bg-primary hover:text-white focus:outline-none"
-                                      type="button"
-                                      onClick={goToDetailedPage.bind(
-                                        null,
-                                        item.id
-                                      )}
-                                    >
-                                      Details
-                                    </button>
-                                  </div>
-                                </td>
-                              )}
-
-                              {/* <td className="whitespace-no-wrap border-gray-100 border-b px-6 py-2 text-center">
-                                <img
-                                  src={TrashLogo}
-                                  width={12}
-                                  onClick={handleDeleteRecord.bind(
-                                    null,
-                                    item.id
-                                  )}
-                                  className="ml-3 inline cursor-pointer"
-                                />
-                              </td> */}
                             </tr>
                           ))
                         ) : (
