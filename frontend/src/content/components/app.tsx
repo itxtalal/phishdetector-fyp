@@ -203,6 +203,9 @@ function App() {
     });
   }, [extensionEnabled]);
 
+  document.body.style.removeProperty('overflow');
+  document.body.style.removeProperty('height');
+
   if (isUrlWhitelisted()) return <></>;
 
   if (showAlert && extensionEnabled) {

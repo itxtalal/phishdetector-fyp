@@ -1,14 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .phishing {
@@ -16,6 +11,7 @@
 }
 
 .popup {
+  margin: 0;
   padding: 1rem 1.5rem;
   width: 500px;
   display: flex;

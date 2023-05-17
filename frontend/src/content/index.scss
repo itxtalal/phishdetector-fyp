@@ -1,17 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-* {
+.container-pd {
   margin: 0;
   padding: 0;
-}
-
-.container-pd {
   width: 100vw;
   height: 100vh;
   display: flex;
