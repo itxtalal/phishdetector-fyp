@@ -7,6 +7,15 @@ function App() {
   const [url, setUrl] = React.useState('');
 
   React.useEffect(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const currentUrl = tabs[0].url;
+
+      if (!currentUrl) return;
+      if (currentUrl === url) return;
+
+      setUrl(() => currentUrl);
+    });
+
     chrome.storage.sync.get('extensionEnabled', ({ extensionEnabled }) => {
       setExtensionEnabled(() => extensionEnabled);
     });
@@ -37,18 +46,27 @@ function App() {
       }
     });
 
-    chrome.storage.sync.get('url', ({ url }) => {
-      setUrl(() => url);
-    });
-
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.url) {
         setUrl(() => changes.url.newValue);
       }
     });
 
+    // run a function after 100 ms to get the current url
+    // const timeout = setTimeout(() => {
+    //   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    //     const currentUrl = tabs[0].url;
+
+    //     if (!currentUrl) return;
+    //     if (currentUrl === url) return;
+
+    //     setUrl(() => currentUrl);
+    //   });
+    // }, 5000);
+
     return () => {
       chrome.storage.onChanged.removeListener(() => {});
+      // clearTimeout(timeout);
     };
   }, []);
 

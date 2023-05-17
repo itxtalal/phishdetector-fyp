@@ -33,18 +33,10 @@ function App() {
   const [blacklist, setBlacklist] = useState<string[]>([]);
 
   useEffect(() => {
-    chrome.storage.sync.get('whitelist', ({ whitelist }) => {
-      setWhitelist(() => whitelist);
-    });
-
     chrome.storage.onChanged.addListener((changes) => {
       if (changes.whitelist) {
         setWhitelist(() => changes.whitelist.newValue);
       }
-    });
-
-    chrome.storage.sync.get('blacklist', ({ blacklist }) => {
-      setBlacklist(() => blacklist);
     });
 
     chrome.storage.onChanged.addListener((changes) => {
@@ -52,6 +44,17 @@ function App() {
         setBlacklist(() => changes.blacklist.newValue);
       }
     });
+
+    chrome.storage.sync.get('whitelist', ({ whitelist }) => {
+      setWhitelist(() => whitelist);
+    });
+    const timeout = setTimeout(() => {
+      chrome.storage.sync.get('blacklist', ({ blacklist }) => {
+        setBlacklist(() => blacklist);
+      });
+    }, 1000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
