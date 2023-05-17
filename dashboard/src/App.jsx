@@ -7,6 +7,8 @@ import Profile from "./pages/Profile";
 import ManageSites from "./pages/Form/ManageSites";
 import BlackListedTable from "./pages/BlackListedTable";
 import WhiteListedTable from "./pages/WhiteListedTable";
+import BlackListedSiteDetails from './pages/BlackListedSiteDetails';
+import WhiteListedSiteDetails from './pages/WhiteListedSiteDetails';
 import Settings from "./pages/Settings";
 import Chart from "./pages/Chart";
 import SignIn from "./pages/Authentication/SignIn";
@@ -47,7 +49,9 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Chart />} />
           <Route path="/blacklisted" element={<BlackListedTable />} />
+          <Route path="/blacklisted/:id" element={<BlackListedSiteDetails />} />
           <Route path="/whitelisted" element={<WhiteListedTable />} />
+          {/* <Route path="/whitelisted/:id" element={<WhiteListedSiteDetails />} /> */}
           <Route path="/settings" element={<Settings />} />
           <Route path="/managesites" element={<ManageSites />} />
 
