@@ -31,10 +31,6 @@ const ChartTwo = () => {
         name: "Blck. Listed",
         data: response?.detections?.last_week || [],
       },
-      {
-        name: "Wht. Listed",
-        data: [44, 55, 41, 67, 22, 43, 65],
-      },
     ],
     options: {
       colors: ["#3C50E0", "#80CAEE"],
@@ -108,7 +104,7 @@ const ChartTwo = () => {
       </div>
 
       <div>
-        <div id="chartTwo" className="-ml-5 -mb-9">
+        <div id="chartTwo" className="-mb-9 -ml-5">
           <ReactApexChart
             options={state.options}
             series={state.series}
