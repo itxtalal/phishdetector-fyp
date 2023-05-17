@@ -1,4 +1,4 @@
-const base = require('./base/v2');
+const base = require('./base/v3');
 
 module.exports = {
   ...base,

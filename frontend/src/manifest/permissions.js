@@ -17,9 +17,9 @@ module.exports = [
   // "cookies",
   // "debugger",
   // "declarativeContent",
-  'declarativeNetRequest',
-  'declarativeNetRequestWithHostAccess',
-  'declarativeNetRequestFeedback',
+  // 'declarativeNetRequest',
+  // 'declarativeNetRequestWithHostAccess',
+  // 'declarativeNetRequestFeedback',
   // 'declarativeWebRequest',
   // "desktopCapture",
   // "documentScan",
@@ -69,8 +69,8 @@ module.exports = [
   // "vpnProvider",
   // "wallpaper",
   // 'webNavigation',
-  'webRequest',
-  'webRequestBlocking',
+  // 'webRequest',
+  // 'webRequestBlocking',
 ];
 
 // webrequestBlocking donot works in manifest v3

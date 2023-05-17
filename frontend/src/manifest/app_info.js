@@ -1,5 +1,5 @@
 module.exports = {
   name: 'PhishDetector',
-  short_name: 'PhishDet',
-  description: 'A browser extension to detect phishing websites',
+  short_name: 'PhishDetector',
+  description: 'A browser extension to detect phishing websites in real-time',
 };
