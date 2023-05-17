@@ -13,7 +13,7 @@
     <a href="https://github.com/itxtalal/phishdetector-fyp"><strong>Explore the docs »</strong></a>
     <br/>
     <br/>
-    <a href="https://github.com/itxtalal/phishdetector-fyp">View Demo</a>
+    <a href="http://demo.phishdetector.live/">View Demo</a>
     .
     <a href="https://github.com/itxtalal/phishdetector-fyp/issues">Report Bug</a>
     .
@@ -123,7 +123,7 @@ Contributions are what make the open source community such an amazing place to b
 * If you have suggestions for adding or removing projects, feel free to [open an issue](https://github.com/itxtalal/phishdetector-fyp/issues/new) to discuss it, or directly create a pull request after you edit the *README.md* file with necessary changes.
 * Please make sure you check your spelling and grammar.
 * Create individual PR for each suggestion.
-* Please also read through the [Code Of Conduct](https://github.com/itxtalal/phishdetector-fyp/blob/main/CODE_OF_CONDUCT.md) before posting your first idea as well.
+* Please also read through the [Code Of Conduct](https://github.com/itxtalal/phishdetector-fyp/blob/master/CODE_OF_CONDUCT.md) before posting your first idea as well.
 
 ### Creating A Pull Request
 
@@ -135,7 +135,7 @@ Contributions are what make the open source community such an amazing place to b
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/itxtalal/phishdetector-fyp/blob/main/LICENSE.md) for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/itxtalal/phishdetector-fyp/blob/master/LICENSE.md) for more information.
 
 ## Authors
 
