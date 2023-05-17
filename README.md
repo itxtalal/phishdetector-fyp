@@ -140,5 +140,5 @@ Distributed under the MIT License. See [LICENSE](https://github.com/itxtalal/phi
 ## Authors
 
 * **M Talal Jamil** - *Software Engineer* - [M Talal Jamil](https://github.com/itxtalal) - *Worked on Browser Extension*
-* **Hanif Ali** - *Software Engineer* - [Hanif Ali](https://github.com/hanifali) - *Worked on ML and API endpoints*
+* **Hanif Ali** - *Software Engineer* - [Hanif Ali](https://github.com/hanif-ali) - *Worked on ML and API endpoints*
 * **Fahad Ali** - *Software Engineer* - [Fahad Ali](https://github.com/imfahadali) - *Worked on Admin Dashboard*
