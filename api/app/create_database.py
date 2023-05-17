@@ -10,7 +10,7 @@ Base.metadata.create_all(bind=engine)
 session = SessionLocal()
 
 # Load data from a CSV file
-with open("app/dataset.csv", "r") as file:
+with open("app/dataset_minimal.csv", "r") as file:
     reader = csv.reader(file)
     headers = next(reader)
     for row in reader:

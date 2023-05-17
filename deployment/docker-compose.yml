@@ -26,16 +26,6 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  ml: 
-    ports: 
-      - 8001:8001
-    image: ml
-    build: 
-      context: ../ml
-      dockerfile: ../ml/Dockerfile
-    volumes:
-      - ../ml:/model
-
 volumes:
   db_data:
     driver: local

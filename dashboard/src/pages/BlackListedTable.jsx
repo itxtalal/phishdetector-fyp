@@ -25,6 +25,8 @@ const BlackListedTable = () => {
   };
 
   const handleDeleteRecord = async (selectedDomains) => {
+    const confirm = window.confirm("Are you sure you want to delete?");
+    if (!confirm) return;
     const response = await fetch(`${BASE_URL}/blacklist`, {
       body: JSON.stringify({ domains: selectedDomains }),
       method: "DELETE",
@@ -33,14 +35,9 @@ const BlackListedTable = () => {
       },
     });
     const data = await response.json();
-    if (data.blacklist_deleted) {
+    if (data.domains_deleted) {
       toast.success(
-        `Successfully removed ${data.blacklist_deleted} URLs for the selected domains`
-      );
-    }
-    if (data.detections_deleted) {
-      toast.success(
-        `Successfully removed ${data.detections_deleted} detections from the database`
+        `Successfully removed ${data.domains_deleted} domains from the blacklist`
       );
     }
     await fetchBlackListedSites();
