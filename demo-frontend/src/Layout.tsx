@@ -1,5 +1,5 @@
-import Logo from "./logo.png";
-import Blocked from './blocked.png'
+import Logo from './logo.png';
+import Blocked from './blocked.png';
 
 export default function () {
   return (
@@ -11,7 +11,9 @@ export default function () {
           </div>
           <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
             Smart, Secure and Seamless.
-            <span className="sm:block">Your AI guard against Phishing. </span>
+            <span className="sm:block leading-snug">
+              Your AI guard against Phishing.{' '}
+            </span>
           </h1>
 
           <p className="mx-auto mt-5 max-w-xl sm:text-xl sm:leading-relaxed">
@@ -22,7 +24,7 @@ export default function () {
           <div className="mt-8 flex flex-wrap justify-center gap-4">
             <a
               className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              href="https://github.com/hanif-ali/phishdetector/releases/tag/v1"
+              href="https://github.com/itxtalal/phishdetector-fyp/releases/tag/v1.1"
             >
               Get the extension
             </a>
@@ -56,10 +58,13 @@ export default function () {
             Demo
           </h1>
           <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            The URLs on the left are identified Phishing URLs. 
+            The URLs on the left are identified Phishing URLs.
           </p>
           <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            If you have the extension installed, <span className="text-red-500">they will be highlighted in red.</span>
+            If you have the extension installed,{' '}
+            <span className="text-red-500">
+              they will be highlighted in red.
+            </span>
           </p>
 
           <div className="flex flex-row justify-center mt-9">
