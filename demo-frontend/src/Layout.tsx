@@ -48,13 +48,13 @@ export default function () {
         className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
         id="demo"
       >
-        <div className="w-1/2">
-          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+        <div className="lg:w-1/2">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text leading-snug text-3xl font-extrabold text-transparent sm:text-5xl text-center lg:text-left lg:leading-tight">
             Automatically detects phishing URLs on your webpages
           </h1>
         </div>
-        <div className="mx-auto text-center">
-          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+        <div className="mx-auto text-center flex flex-col lg:block">
+          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl mt-8 lg:mt-0">
             Demo
           </h1>
           <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
@@ -67,10 +67,10 @@ export default function () {
             </span>
           </p>
 
-          <div className="flex flex-row justify-center mt-9">
-            <div className="mr-8">
+          <div className="flex flex-col lg:flex-row justify-center mt-9">
+            <div className="lg:mr-8">
               <h2 className="text-3xl mb-3">Malicious</h2>
-              <div>
+              <div className="text-red-500 lg:text-white">
                 <a href="https://amazon-ish.vercel.app/">
                   https://amazon-ish.vercel.app/
                 </a>
@@ -95,7 +95,7 @@ export default function () {
                 <br />
               </div>
             </div>
-            <div className="ml-8">
+            <div className="lg:ml-8 mt-6 lg:mt-0">
               <h2 className="text-3xl mb-3">Safe</h2>
               <div>
                 <a href="https://www.google.com">https://google.com</a>
@@ -115,18 +115,18 @@ export default function () {
         className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
         id="demo"
       >
-        <div className="w-1/2">
-          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+        <div className="lg:w-1/2">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl text-center lg:text-left lg:leading-tight">
             Disallow access to any websites that are identified as phishing
           </h1>
         </div>
         <div className="mx-auto text-center w-1/2">
-          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl mt-8 lg:mt-0">
             Demo
           </h1>
 
           <div className="flex flex-row justify-center mt-9">
-            <img src={Blocked} />
+            <img src={Blocked} className="" />
           </div>
         </div>
       </div>
