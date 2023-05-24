@@ -126,7 +126,16 @@ export default function () {
           </h1>
 
           <div className="flex flex-row justify-center mt-9">
-            <img src={Blocked} className="" />
+            {/* <img src={Blocked} className="" /> */}
+
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/aNUeteA7FgU"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
       </div>
