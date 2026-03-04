@@ -24,9 +24,14 @@ export default function () {
             Live Demo
           </a>
         </div>
-        <button className="px-5 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
+        <a
+          href="https://github.com/itxtalal/phishdetector-fyp/releases/tag/v1.1"
+          target="_blank"
+          rel="noreferrer"
+          className="px-5 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors"
+        >
           Get Extension
-        </button>
+        </a>
       </nav>
 
       <HeroSection />

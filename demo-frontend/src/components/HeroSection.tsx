@@ -31,12 +31,20 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <button className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform shadow-lg shadow-primary/20">
-            Launch Security Scan
-          </button>
-          <button className="px-8 py-4 rounded-xl glass-card border-white/10 hover:bg-white/5 transition-colors font-medium">
-            Read Technical Whitepaper
-          </button>
+          <a
+            href="https://github.com/itxtalal/phishdetector-fyp/releases/tag/v1.1"
+            target="_blank"
+            rel="noreferrer"
+            className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-semibold hover:scale-105 transition-transform shadow-lg shadow-primary/20"
+          >
+            Get Extension
+          </a>
+          <a
+            href="#demo"
+            className="px-8 py-4 rounded-xl glass-card border-white/10 hover:bg-white/5 transition-colors font-medium"
+          >
+            View Live Demo
+          </a>
         </div>
 
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 animate-fade-in-up">
