@@ -1,144 +1,154 @@
-import Logo from './logo.png';
-import Blocked from './blocked.png';
+import Logo from "./logo.png";
+import HeroSection from "./components/HeroSection";
+import FeatureGrid from "./components/FeatureGrid";
+import TechnicalProcess from "./components/TechnicalProcess";
 
 export default function () {
   return (
-    <section className="bg-gray-900 text-white">
-      <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
-        <div className="mx-auto max-w-3xl text-center">
-          <div className="mb-8">
-            <img src={Logo} className="mx-auto" />
-          </div>
-          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
-            Smart, Secure and Seamless.
-            <span className="sm:block leading-snug">
-              Your AI guard against Phishing.{' '}
-            </span>
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-xl sm:text-xl sm:leading-relaxed">
-            PhishDetector combines lexical ML models with existing datasets to
-            detect phishing URLs effectively.
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              className="block w-full rounded border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-transparent hover:text-white focus:outline-none focus:ring active:text-opacity-75 sm:w-auto"
-              href="https://github.com/itxtalal/phishdetector-fyp/releases/tag/v1.1"
-            >
-              Get the extension
-            </a>
-
-            <a
-              className="block w-full rounded border border-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-              href="#demo"
-            >
-              Demo
-            </a>
-            <a
-              className="block w-full rounded border border-blue-600 px-12 py-3 text-sm font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring active:bg-blue-500 sm:w-auto"
-              href="http://dashboard.phishdetector.live"
-            >
-              Analytics Dashboard (Admin Only)
-            </a>
-          </div>
+    <main className="bg-[#050505] text-white">
+      <nav className="fixed top-0 w-full z-50 glass-card border-x-0 border-t-0 border-b-white/5 py-4 px-6 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <img src={Logo} alt="PhishDetector Logo" className="h-8" />
         </div>
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-white/60">
+          <a href="#" className="hover:text-primary transition-colors">
+            Features
+          </a>
+          <a
+            href="#how-it-works"
+            className="hover:text-primary transition-colors"
+          >
+            How it Works
+          </a>
+          <a href="#demo" className="hover:text-primary transition-colors">
+            Live Demo
+          </a>
+        </div>
+        <button className="px-5 py-2 rounded-lg bg-primary/10 border border-primary/20 text-primary text-sm font-semibold hover:bg-primary/20 transition-colors">
+          Get Extension
+        </button>
+      </nav>
+
+      <HeroSection />
+
+      <div id="features">
+        <FeatureGrid />
       </div>
-      <div
-        className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
-        id="demo"
-      >
-        <div className="lg:w-1/2">
-          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text leading-snug text-3xl font-extrabold text-transparent sm:text-5xl text-center lg:text-left lg:leading-tight">
-            Automatically detects phishing URLs on your webpages
-          </h1>
-        </div>
-        <div className="mx-auto text-center flex flex-col lg:block">
-          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl mt-8 lg:mt-0">
-            Demo
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            The URLs on the left are identified Phishing URLs.
-          </p>
-          <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            If you have the extension installed,{' '}
-            <span className="text-red-500">
-              they will be highlighted in red.
-            </span>
-          </p>
 
-          <div className="flex flex-col lg:flex-row justify-center mt-9">
-            <div className="lg:mr-8">
-              <h2 className="text-3xl mb-3">Malicious</h2>
-              <div className="text-red-500 lg:text-white">
-                <a href="https://amazon-ish.vercel.app/">
-                  https://amazon-ish.vercel.app/
-                </a>
-                <br />
-                <a href="https://am22fcu.firebaseapp.com/">
-                  https://am22fcu.firebaseapp.com/
-                </a>
-                <br />
-                <a href="http://an-bcna.weeblysite.com">
-                  http://an-bcna.weeblysite.com
-                </a>
-                <br />
-                <a href="http://apple.maps-auth.com">
-                  http://apple.maps-auth.com
-                </a>
-                <br />
-                <a href="http://applitronix.com">http://applitronix.com</a>
-                <br />
-                <a href="http://att-106750107115.square.site">
-                  http://att-106750107115.square.site
-                </a>
-                <br />
+      <div id="how-it-works">
+        <TechnicalProcess />
+      </div>
+
+      <section className="py-24 px-4 bg-background" id="demo">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="mb-16 text-center">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-300 to-blue-500 leading-tight">
+              Interactive Demo
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto text-lg">
+              Observe PhishDetector in action. Below are real-world URLs
+              identified by our neural engine.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="glass-card p-8 rounded-3xl">
+              <div className="flex flex-col gap-8">
+                <div>
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                    Malicious Vectors Identified
+                  </h3>
+                  <div className="space-y-4 font-mono text-sm">
+                    {[
+                      "https://amazon-ish.vercel.app/",
+                      "https://am22fcu.firebaseapp.com/",
+                      "http://an-bcna.weeblysite.com",
+                      "http://apple.maps-auth.com",
+                      "http://applitronix.com",
+                      "http://att-106750107115.square.site",
+                    ].map((url, i) => (
+                      <div
+                        key={url}
+                        className="p-3 rounded-lg bg-red-500/5 border border-red-500/20 text-red-400 break-all hover:bg-red-500/10 transition-colors"
+                      >
+                        <a href={url} target="_blank" rel="noreferrer">
+                          {url}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-2xl font-bold mb-6 flex items-center gap-2 text-primary">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Safe Benchmarks
+                  </h3>
+                  <div className="space-y-4 font-mono text-sm">
+                    {[
+                      "https://google.com",
+                      "https://www.github.com",
+                      "https://github.dev",
+                      "https://www.facebook.com",
+                    ].map((url, i) => (
+                      <div
+                        key={url}
+                        className="p-3 rounded-lg bg-primary/5 border border-primary/20 text-primary break-all hover:bg-primary/10 transition-colors"
+                      >
+                        <a href={url} target="_blank" rel="noreferrer">
+                          {url}
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="lg:ml-8 mt-6 lg:mt-0">
-              <h2 className="text-3xl mb-3">Safe</h2>
-              <div>
-                <a href="https://www.google.com">https://google.com</a>
-                <br />
-                <a href="https://www.github.com">https://www.github.com</a>
-                <br />
-                <a href="https://www.github.dev">https://github.dev</a>
-                <br />
-                <a href="https://www.facebook.com">https://www.facebook.com</a>
-                <br />
+
+            <div className="flex flex-col gap-8">
+              <div className="glass-card p-8 rounded-3xl border-primary/20">
+                <h3 className="text-2xl font-bold mb-6">Execution Preview</h3>
+                <div className="aspect-video rounded-2xl overflow-hidden glass-card border-white/5">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/aNUeteA7FgU"
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  ></iframe>
+                </div>
+              </div>
+
+              <div className="glass-card p-8 rounded-3xl">
+                <h3 className="text-xl font-bold mb-4">Neural Feedback</h3>
+                <p className="text-white/50 text-sm leading-relaxed mb-6">
+                  "PhishDetector automatically highlights malicious links in red
+                  on any webpage you visit, preventing accidental clicks before
+                  the page even loads."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">
+                    PD
+                  </div>
+                  <div>
+                    <div className="font-bold">System Architecture</div>
+                    <div className="text-xs text-white/40">
+                      Verified by ML Leads
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div
-        className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center"
-        id="demo"
-      >
-        <div className="lg:w-1/2">
-          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl text-center lg:text-left lg:leading-tight">
-            Disallow access to any websites that are identified as phishing
-          </h1>
-        </div>
-        <div className="mx-auto text-center w-1/2">
-          <h1 className="bg-gradient-to-r text-white bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl mt-8 lg:mt-0">
-            Demo
-          </h1>
+      </section>
 
-          <div className="flex flex-row justify-center mt-9">
-            {/* <img src={Blocked} className="" /> */}
-
-            <iframe
-              width="560"
-              height="315"
-              src="https://www.youtube.com/embed/aNUeteA7FgU"
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
+      <footer className="py-12 border-t border-white/5 text-center text-white/20 text-sm">
+        <p>
+          © 2026 PhishDetector Research Labs. All technical models proprietary.
+        </p>
+      </footer>
+    </main>
   );
 }

@@ -2,6 +2,48 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 144.1 80.7% 4.6%;
+    --glass-background: rgba(15, 15, 20, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+  }
+
+  body {
+    @apply bg-[#050505] text-white font-sans;
+  }
+
+  ::selection {
+    background-color: hsla(142.1, 70.6%, 45.3%, 0.3);
+    color: white;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: var(--glass-background);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  .neon-text {
+    @apply text-[#22c55e] transition-all duration-300;
+    text-shadow:
+      0 0 10px rgba(34, 197, 94, 0.5),
+      0 0 20px rgba(34, 197, 94, 0.2);
+  }
+
+  .neon-border {
+    @apply border-[#22c55e]/50 hover:border-[#22c55e] transition-all duration-300;
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.1);
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
